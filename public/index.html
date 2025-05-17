@@ -5,17 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nova Proxy</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="/uv/uv.bundle.js"></script>
-  <script src="/uv/uv.config.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/uv/sw.js', {
-          scope: __uv$config.prefix
-        });
-      });
-    }
-  </script>
+  
+<script src="/uv/uv.bundle.js"></script>
+<script src="/uv/uv.config.js"></script>
+<script src="/baremux/index.js"></script>
+<script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/uv/sw.js");
+    });
+  }
+</script>
+
 </head>
 <body>
   <div class="wrapper">

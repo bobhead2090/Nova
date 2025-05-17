@@ -1,0 +1,16 @@
+{
+  "name": "nova-ultraviolet-proxy",
+  "version": "1.0.0",
+  "description": "A space-themed Ultraviolet proxy called Nova",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "ultraviolet-static": "^1.0.0"
+  },
+  "devDependencies": {
+    "vite": "^4.0.0"
+  }
+}

@@ -4,6 +4,23 @@ const urlBar = document.getElementById('urlBar');
 const iframe = document.getElementById('proxyFrame');
 const devToolsBtn = document.getElementById('devToolsBtn');
 const searchContainer = document.getElementById('searchContainer');
+const iframeWindow = document.getElementById("iframeWindow");
+const urlInput = document.getElementById("urlInput");
+const searchButton = document.getElementById("searchButton");
+
+searchButton.onclick = function (event) {
+  event.preventDefault();
+  let url = urlInput.value;
+  if (!url.includes(".")) {
+    url = "https://www.google.com/search?q=" + encodeURIComponent(url);
+  } else {
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      url = "https://" + url;
+    }
+  }
+  iframeWindow.src = __uv$config.prefix + __uv$config.encodeUrl(url);
+};
+
 
 let historyStack = [];
 let currentIndex = -1;
