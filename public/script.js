@@ -1,76 +1,95 @@
-const searchBtn = document.getElementById('searchBtn');
+const iframeWindow = document.getElementById('iframeWindow');
 const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const erudaBtn = document.getElementById('erudaBtn');
 const urlBar = document.getElementById('urlBar');
-const iframe = document.getElementById('proxyFrame');
-const devToolsBtn = document.getElementById('devToolsBtn');
-const searchContainer = document.getElementById('searchContainer');
-const iframeWindow = document.getElementById("iframeWindow");
-const urlInput = document.getElementById("urlInput");
-const searchButton = document.getElementById("searchButton");
-
-searchButton.onclick = function (event) {
-  event.preventDefault();
-  let url = urlInput.value;
-  if (!url.includes(".")) {
-    url = "https://www.google.com/search?q=" + encodeURIComponent(url);
-  } else {
-    if (!url.startsWith("http://") && !url.startsWith("https://")) {
-      url = "https://" + url;
-    }
-  }
-  iframeWindow.src = __uv$config.prefix + __uv$config.encodeUrl(url);
-};
-
+const backBtn = document.getElementById('back');
+const forwardBtn = document.getElementById('forward');
 
 let historyStack = [];
-let currentIndex = -1;
+let historyIndex = -1;
 
-function navigate(url) {
-  const encodedUrl = __uv$config.encodeUrl(url);
-  iframe.src = __uv$config.prefix + encodedUrl;
-  iframe.style.display = 'block';
-  searchContainer.style.display = 'none';
-  urlBar.value = url;
-
-  // Push to history
-  if (currentIndex === historyStack.length - 1) {
-    historyStack.push(url);
-    currentIndex++;
-  }
+function encodeUrl(url) {
+  if(!window.__uv$config) return url;
+  return window.__uv$config.prefix + window.__uv$config.encodeUrl(url);
 }
 
-searchBtn.onclick = () => {
-  const val = searchInput.value.trim();
-  if (!val) return;
-  const url = val.startsWith('http') ? val : `https://www.google.com/search?q=${encodeURIComponent(val)}`;
-  navigate(url);
+function navigateTo(url) {
+  if (!url) return;
+  iframeWindow.src = encodeUrl(url);
+  urlBar.value = url;
+  if(historyIndex === -1 || historyStack[historyIndex] !== url) {
+    historyStack = historyStack.slice(0, historyIndex+1);
+    historyStack.push(url);
+    historyIndex++;
+  }
+  updateButtons();
+  searchInput.classList.add('hidden');
+  searchBtn.classList.add('hidden');
+  erudaBtn.classList.remove('hidden');
+}
+
+function updateButtons() {
+  backBtn.disabled = historyIndex <= 0;
+  forwardBtn.disabled = historyIndex >= historyStack.length -1;
+}
+
+backBtn.onclick = () => {
+  if(historyIndex > 0) {
+    historyIndex--;
+    const url = historyStack[historyIndex];
+    iframeWindow.src = encodeUrl(url);
+    urlBar.value = url;
+    updateButtons();
+  }
 };
 
-urlBar.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
-    navigate(urlBar.value.trim());
+forwardBtn.onclick = () => {
+  if(historyIndex < historyStack.length -1) {
+    historyIndex++;
+    const url = historyStack[historyIndex];
+    iframeWindow.src = encodeUrl(url);
+    urlBar.value = url;
+    updateButtons();
+  }
+};
+
+urlBar.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter') {
+    let url = urlBar.value.trim();
+    if (!url) return;
+    if(!url.includes('.') && !url.startsWith('http')) {
+      url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+    } else if(!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://' + url;
+    }
+    navigateTo(url);
   }
 });
 
-document.getElementById('backBtn').onclick = () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    navigate(historyStack[currentIndex]);
+searchBtn.onclick = () => {
+  let val = searchInput.value.trim();
+  if(!val) return;
+  if(!val.includes('.') && !val.startsWith('http')) {
+    val = 'https://www.google.com/search?q=' + encodeURIComponent(val);
+  } else if(!val.startsWith('http://') && !val.startsWith('https://')) {
+    val = 'https://' + val;
   }
+  navigateTo(val);
 };
 
-document.getElementById('forwardBtn').onclick = () => {
-  if (currentIndex < historyStack.length - 1) {
-    currentIndex++;
-    navigate(historyStack[currentIndex]);
-  }
-};
-
-devToolsBtn.onclick = () => {
-  iframe.contentWindow.eval(`
-    var script = document.createElement('script');
-    script.src = '//cdn.jsdelivr.net/npm/eruda';
-    document.body.appendChild(script);
-    script.onload = () => eruda.init();
+erudaBtn.onclick = () => {
+  iframeWindow.contentWindow.eval(`
+    (function(){
+      if(window.eruda) {eruda.show(); return;}
+      var script = document.createElement('script');
+      script.src = "https://cdn.jsdelivr.net/npm/eruda";
+      script.onload = function() { eruda.init(); eruda.show(); };
+      document.body.appendChild(script);
+    })();
   `);
 };
+
+// Initially hide eruda button
+erudaBtn.classList.add('hidden');
+updateButtons();

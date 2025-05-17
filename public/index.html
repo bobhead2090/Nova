@@ -1,46 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nova Proxy</title>
-  <link rel="stylesheet" href="style.css" />
-  
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Nova Proxy</title>
+<link rel="stylesheet" href="style.css" />
 <script src="/uv/uv.bundle.js"></script>
 <script src="/uv/uv.config.js"></script>
-<script src="/baremux/index.js"></script>
 <script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/uv/sw.js");
+      navigator.serviceWorker.register("/uv/uv.sw.js");
     });
   }
 </script>
-
 </head>
 <body>
-  <div class="wrapper">
-
-    <!-- Top Navigation Bar -->
-    <div class="top-bar white-outline">
-      <button id="backBtn">←</button>
-      <button id="forwardBtn">→</button>
-      <input id="urlBar" type="text" placeholder="Enter URL" />
-      <button id="devToolsBtn">DevTools</button>
-    </div>
-
-    <!-- Center Search Bar -->
-    <div id="searchContainer" class="search-bar white-outline">
-      <input id="searchInput" type="text" placeholder="Search or enter URL" />
-      <button id="searchBtn">Go</button>
-    </div>
-
-    <!-- Proxied iframe Content -->
-    <div class="iframe-container white-outline">
-      <iframe id="proxyFrame" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-    </div>
-    
+  <div id="top-bar">
+    <button id="back">&lt;</button>
+    <button id="forward">&gt;</button>
+    <input id="urlBar" type="text" placeholder="Enter URL..." />
   </div>
-  <script src="script.js"></script>
+  <div id="search-container">
+    <input id="searchInput" type="text" placeholder="Search or enter URL" />
+    <button id="searchBtn">Go</button>
+    <button id="erudaBtn">DevTools</button>
+  </div>
+  <iframe id="iframeWindow" sandbox="allow-scripts allow-same-origin" frameborder="0"></iframe>
+<script src="script.js"></script>
 </body>
 </html>
