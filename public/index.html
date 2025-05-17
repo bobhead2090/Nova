@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nova Proxy</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="/uv/uv.bundle.js"></script>
+  <script src="/uv/uv.config.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/uv/sw.js', {
+          scope: __uv$config.prefix
+        });
+      });
+    }
+  </script>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Top Navigation Bar -->
+    <div class="top-bar white-outline">
+      <button id="backBtn">←</button>
+      <button id="forwardBtn">→</button>
+      <input id="urlBar" type="text" placeholder="Enter URL" />
+      <button id="devToolsBtn">DevTools</button>
+    </div>
+
+    <!-- Center Search Bar -->
+    <div id="searchContainer" class="search-bar white-outline">
+      <input id="searchInput" type="text" placeholder="Search or enter URL" />
+      <button id="searchBtn">Go</button>
+    </div>
+
+    <!-- Proxied iframe Content -->
+    <div class="iframe-container white-outline">
+      <iframe id="proxyFrame" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+    </div>
+    
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

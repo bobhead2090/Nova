@@ -1,0 +1,75 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  height: 100%;
+  background: linear-gradient(135deg, #6a0dad, #2e004f);
+  color: white;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.white-outline {
+  border: 2px solid white;
+  border-radius: 12px;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-top: 10px;
+  background: transparent;
+}
+
+.top-bar input {
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin: 0 5px;
+  border: none;
+  width: 300px;
+}
+
+.search-bar {
+  margin: 50px auto;
+  padding: 20px;
+  display: flex;
+  background: transparent;
+}
+
+.search-bar input {
+  padding: 15px;
+  border-radius: 20px;
+  border: none;
+  font-size: 16px;
+  width: 300px;
+  margin-right: 10px;
+}
+
+.search-bar button {
+  padding: 15px 20px;
+  border-radius: 20px;
+  background: white;
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.iframe-container {
+  width: 90%;
+  height: 80%;
+  display: none;
+  margin-top: 20px;
+}
+
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+}
